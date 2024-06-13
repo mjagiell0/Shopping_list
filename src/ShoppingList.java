@@ -36,6 +36,14 @@ public class ShoppingList {
         shoppingList.removeIf(position -> position.getProductName().equals(productName));
     }
 
+    void removeAll(){
+        shoppingList.clear();
+    }
+
+    void removeCategory(String category){
+        shoppingList.removeIf(position -> position.getCategory().equals(category));
+    }
+
     void changeCount(String productName, int count) {
         if (count < 1 || productName.isBlank())
             throw new IllegalArgumentException("Incorrect input");
