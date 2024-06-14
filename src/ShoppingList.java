@@ -36,11 +36,11 @@ public class ShoppingList {
         shoppingList.removeIf(position -> position.getProductName().equals(productName));
     }
 
-    void removeAll(){
+    void removeAll() {
         shoppingList.clear();
     }
 
-    void removeCategory(String category){
+    void removeCategory(String category) {
         shoppingList.removeIf(position -> position.getCategory().equals(category));
     }
 
@@ -53,13 +53,13 @@ public class ShoppingList {
         position.setCount(position.getCount() + count);
     }
 
-    void checkPosition(String productName){
+    void checkPosition(String productName) {
         ShoppingListPosition position = getPosition(productName);
 
         position.check();
     }
 
-    void display(){
+    void display() {
         for (ShoppingListPosition position : shoppingList)
             System.out.println("Name: \t" + position.getProductName() + ",\t count: \t" + position.getCount() + ", status: \t" + position.getStatus());
     }
