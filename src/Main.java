@@ -1,48 +1,63 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 public class Main {
     public static void main(String[] args) {
-        String[] productNames = {
-                "Smartfon", "Laptop", "Tablet", "Słuchawki bezprzewodowe", "Telewizor 4K", "Smartwatch", "Głośnik Bluetooth", "Aparat cyfrowy", "Konsola do gier", "Czytnik e-booków",
-                "Sukienka wieczorowa", "Jeansy", "T-shirt", "Buty sportowe", "Kurtka skórzana", "Sweter wełniany", "Koszula formalna", "Spodnie dresowe", "Torebka skórzana", "Płaszcz zimowy",
-                "Pralka", "Lodówka", "Kuchenka mikrofalowa", "Zmywarka", "Odkurzacz", "Żelazko", "Ekspres do kawy", "Czajnik elektryczny", "Blender", "Toster",
-                "Chleb", "Mleko", "Jajka", "Ser żółty", "Makaron", "Ryż", "Pomidory", "Jabłka", "Kawa", "Masło",
-                "Krem nawilżający", "Szampon do włosów", "Odżywka do włosów", "Perfumy", "Podkład do twarzy", "Tusz do rzęs", "Pomadka", "Płyn micelarny", "Balsam do ciała", "Krem pod oczy",
-                "Powieść kryminalna", "Powieść science fiction", "Poradnik kulinarny", "Biografia", "Powieść historyczna", "Thriller psychologiczny", "Książka o rozwoju osobistym", "Album fotograficzny", "Podręcznik do nauki języka", "Komiks",
-                "Rower górski", "Piłka nożna", "Rolki", "Hantle", "Mata do jogi", "Skakanka", "Rakieta tenisowa", "Kask rowerowy", "Plecak turystyczny", "Buty do biegania",
-                "Kanapa", "Stół jadalniany", "Krzesło biurowe", "Szafa ubraniowa", "Łóżko", "Komoda", "Biurko", "Regał na książki", "Stolik kawowy", "Fotel",
-                "Klocki Lego", "Lalka Barbie", "Puzzle 1000 elementów", "Gra planszowa", "Zestaw do malowania", "Pluszowy miś", "Samochodzik zdalnie sterowany", "Piłka plażowa", "Zestaw do robienia biżuterii", "Hulajnoga",
-                "Kosiarka do trawy", "Zestaw mebli ogrodowych", "Gril ogrodowy", "Nasiona kwiatów", "Konewka", "Narzędzia ogrodnicze", "Doniczki", "Hamak", "Altana ogrodowa", "Oświetlenie solarne"
-        };
-        String[] categoriesNames = {"Elektronika", "Moda", "AGD", "Spożywcze", "Kosmetyki", "Książki", "Sport i rekreacja", "Meble", "Gry", "Ogród"};
+
+        String[] products = new String[100], categories = new String[10];
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3333/Shop", "root", "root");
+            Statement statement = connection.createStatement();
+
+            ResultSet resultSet = statement.executeQuery("SELECT CategoryName FROM Categories");
+
+            for (int i = 0; resultSet.next() ; i++)
+                categories[i] = resultSet.getString(1);
+
+            resultSet = statement.executeQuery("SELECT ProductName FROM Products");
+
+            for (int i = 0; resultSet.next() ; i++)
+                products[i] = resultSet.getString(1);
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+            return;
+        }
 
         Shop shop = new Shop();
 
-        shopInit(shop, categoriesNames, productNames);
+        shopInit(shop, categories, products);
 
         ShoppingList shoppingList = new ShoppingList();
 
         System.out.println("##### Test 1 #####");
 
-        shoppingListInit(shoppingList, productNames);
+        shoppingListInit(shoppingList, products);
         shoppingList.display();
 
         System.out.println("##### Test 2 #####");
 
-        shoppingList.removePosition(productNames[0]);
+        shoppingList.removePosition(products[0]);
         shoppingList.display();
 
         System.out.println("##### Test 3 #####");
 
-        shoppingList.removePosition(productNames[3]);
+        shoppingList.removePosition(products[3]);
         shoppingList.display();
 
         System.out.println("##### Test 4 #####");
 
-        shoppingListInit(shoppingList, productNames);
+        shoppingListInit(shoppingList, products);
         shoppingList.display();
 
         System.out.println("##### Test 5 #####");
 
-        shoppingList.checkPosition(productNames[2]);
+        shoppingList.checkPosition(products[2]);
         shoppingList.display();
 
     }

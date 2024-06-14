@@ -1,0 +1,84 @@
+CREATE DATABASE Shop;
+USE Shop;
+
+DROP TABLE IF EXISTS Warehouse;
+DROP TABLE IF EXISTS Categories;
+DROP TABLE IF EXISTS Products;
+
+CREATE TABLE Products(
+    ProductID INT AUTO_INCREMENT PRIMARY KEY,
+    ProductName VARCHAR(30) NOT NULL
+);
+
+CREATE TABLE Categories(
+    CategoryID INT AUTO_INCREMENT PRIMARY KEY,
+    CategoryName VARCHAR(30)
+);
+
+CREATE TABLE Warehouse(
+    ProductID INT,
+    CategoryID INT,
+    Count INT CHECK (Count >= 0),
+    PRIMARY KEY (ProductID, CategoryID),
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID),
+    FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID)
+);
+
+INSERT INTO Categories (CategoryName) VALUES
+('Elektronika'),
+('Moda'),
+('AGD'),
+('Spożywcze'),
+('Kosmetyki'),
+('Książki'),
+('Sport i rekreacja'),
+('Meble'),
+('Gry'),
+('Ogród');
+
+INSERT INTO Products (ProductName) VALUES
+('Smartfon'), ('Laptop'), ('Tablet'), ('Słuchawki bezprzewodowe'), ('Telewizor 4K'), ('Smartwatch'), ('Głośnik Bluetooth'),
+('Aparat cyfrowy'), ('Konsola do gier'), ('Czytnik e-booków'),
+('Sukienka wieczorowa'), ('Jeansy'), ('T-shirt'), ('Buty sportowe'), ('Kurtka skórzana'), ('Sweter wełniany'), ('Koszula formalna'),
+('Spodnie dresowe'), ('Torebka skórzana'), ('Płaszcz zimowy'),
+('Pralka'), ('Lodówka'), ('Kuchenka mikrofalowa'), ('Zmywarka'), ('Odkurzacz'), ('Żelazko'), ('Ekspres do kawy'), ('Czajnik elektryczny'),
+('Blender'), ('Toster'),
+('Chleb'), ('Mleko'), ('Jajka'), ('Ser żółty'), ('Makaron'), ('Ryż'), ('Pomidory'), ('Jabłka'), ('Kawa'), ('Masło'),
+('Krem nawilżający'), ('Szampon do włosów'), ('Odżywka do włosów'), ('Perfumy'), ('Podkład do twarzy'), ('Tusz do rzęs'), ('Pomadka'),
+('Płyn micelarny'), ('Balsam do ciała'), ('Krem pod oczy'),
+('Powieść kryminalna'), ('Powieść science fiction'), ('Poradnik kulinarny'), ('Biografia'), ('Powieść historyczna'), ('Thriller psychologiczny'),
+('Książka o rozwoju osobistym'), ('Album fotograficzny'), ('Podręcznik do nauki języka'), ('Komiks'),
+('Rower górski'), ('Piłka nożna'), ('Rolki'), ('Hantle'), ('Mata do jogi'), ('Skakanka'), ('Rakieta tenisowa'), ('Kask rowerowy'),
+('Plecak turystyczny'), ('Buty do biegania'),
+('Kanapa'), ('Stół jadalniany'), ('Krzesło biurowe'), ('Szafa ubraniowa'), ('Łóżko'), ('Komoda'), ('Biurko'), ('Regał na książki'),
+('Stolik kawowy'), ('Fotel'),
+('Klocki Lego'), ('Lalka Barbie'), ('Puzzle 1000 elementów'), ('Gra planszowa'), ('Zestaw do malowania'), ('Pluszowy miś'),
+('Samochodzik zdalnie sterowany'), ('Piłka plażowa'), ('Zestaw do robienia biżuterii'), ('Hulajnoga'),
+('Kosiarka do trawy'), ('Zestaw mebli ogrodowych'), ('Grill ogrodowy'), ('Nasiona kwiatów'), ('Konewka'), ('Narzędzia ogrodnicze'),
+('Doniczki'), ('Hamak'), ('Altana ogrodowa'), ('Oświetlenie solarne');
+
+DROP PROCEDURE ProductsToCategories;
+
+DELIMITER //
+
+CREATE PROCEDURE ProductsToCategories()
+BEGIN
+    DECLARE cat_id INT DEFAULT 1;
+    DECLARE prod_id INT DEFAULT 1;
+
+    label1: WHILE cat_id <= 10 DO
+        INSERT INTO Warehouse (ProductID, CategoryID, Count) VALUES (prod_id, cat_id, 10);
+        SET prod_id = prod_id + 1;
+        IF prod_id % 10 = 1 THEN
+            SET cat_id = cat_id + 1;
+        END IF;
+    END WHILE label1;
+END; //
+
+DELIMITER ;
+
+CALL ProductsToCategories();
+
+SELECT c.CategoryName, p.ProductName FROM Categories c
+LEFT JOIN Warehouse w ON w.CategoryID = c.CategoryID
+LEFT JOIN Products p ON p.ProductID = w.ProductID;

@@ -1,12 +1,11 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.NoSuchElementException;
 
 public class Shop {
     HashMap<String, ArrayList<String>> shop;
 
     Shop(){
-        shop = new HashMap<String, ArrayList<String>>();
+        shop = new HashMap<>();
     }
 
     void addProduct(String category, String product){

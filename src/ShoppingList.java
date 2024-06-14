@@ -7,33 +7,33 @@ public class ShoppingList {
         this.shoppingList = new ArrayList<>();
     }
 
-    void setPosition(String productName, int count) {
-        if (productName.isBlank() || count < 1)
+    void setPosition(String product, int count) {
+        if (product.isBlank() || count < 1)
             throw new IllegalArgumentException("Incorrect input");
 
         for (ShoppingListPosition position : shoppingList)
-            if (position.getProductName().equals(productName)) {
-                this.changeCount(productName, count);
+            if (position.getProduct().equals(product)) {
+                this.changeCount(product, count);
                 return;
             }
 
-        ShoppingListPosition newPosition = new ShoppingListPosition(productName, count);
+        ShoppingListPosition newPosition = new ShoppingListPosition(product, count);
         shoppingList.add(newPosition);
     }
 
-    ShoppingListPosition getPosition(String productName) {
-        if (productName.isBlank())
+    ShoppingListPosition getPosition(String product) {
+        if (product.isBlank())
             throw new IllegalArgumentException("Blank product name argument");
 
         for (ShoppingListPosition position : shoppingList)
-            if (position.getProductName().equals(productName))
+            if (position.getProduct().equals(product))
                 return position;
 
         throw new NoSuchElementException("No such a product in list.");
     }
 
-    void removePosition(String productName) {
-        shoppingList.removeIf(position -> position.getProductName().equals(productName));
+    void removePosition(String product) {
+        shoppingList.removeIf(position -> position.getProduct().equals(product));
     }
 
     void removeAll() {
@@ -44,23 +44,25 @@ public class ShoppingList {
         shoppingList.removeIf(position -> position.getCategory().equals(category));
     }
 
-    void changeCount(String productName, int count) {
-        if (count < 1 || productName.isBlank())
+    void changeCount(String product, int count) {
+        if (count < 1 || product.isBlank())
             throw new IllegalArgumentException("Incorrect input");
 
-        ShoppingListPosition position = getPosition(productName);
+        ShoppingListPosition position = getPosition(product);
 
         position.setCount(position.getCount() + count);
     }
 
-    void checkPosition(String productName) {
-        ShoppingListPosition position = getPosition(productName);
+    void checkPosition(String product) {
+        ShoppingListPosition position = getPosition(product);
 
         position.check();
     }
 
     void display() {
+        System.out.println("|\t\tName\t\t|\tCategory\t|\tCount\t|\tStatus\t|");
+        System.out.println("--------------------------------------------");
         for (ShoppingListPosition position : shoppingList)
-            System.out.println("Name: \t" + position.getProductName() + ",\t count: \t" + position.getCount() + ", status: \t" + position.getStatus());
+            System.out.println("|\t" + position.getProduct() + "\t|\t" + position.getCategory() + "\t|\t" + position.getCount() + "\t|\t" + position.getStatus());
     }
 }
