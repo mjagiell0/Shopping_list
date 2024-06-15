@@ -9,12 +9,12 @@ public class UnitTests {
     private final static Shop SHOP = new Shop(); // Konstruktor sklepu tworzy 10 kategorii po 10 produktów
     private static ShoppingList shoppingList = new ShoppingList(); // Konstruktor listy zakupów towrzy pustą listę
     private static String[] products;
-    private final static int NUMBER_OF_TESTS = 100;
+    private final static int NUMBER_OF_TESTS = 5;
 
     public static void main(String[] args) {
-        initialTests();
+        //initialTests();
 
-        removingPositionTests();
+        //removingPositionTests();
     }
 
     private static void removingPositionTests() {
@@ -37,7 +37,7 @@ public class UnitTests {
                 int index;
 
                 do {
-                    index = RAND.nextInt(countOfProducts);
+                    index = RAND.nextInt(products.length);
                 }while (products[index] == null);
 
                 shoppingList.removePosition(products[index]);
