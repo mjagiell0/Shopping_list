@@ -2,22 +2,53 @@ import java.util.Random;
 
 public class UnitTests {
     private final static Random RAND = new Random();
-    private static int countOfProducts = RAND.nextInt(10);
+    private static final int countOfProducts = RAND.nextInt(1,10);
     private static final int countOfCategories = 10;
-    final static String[] CATEGORY = {"Elektronika", "Moda", "AGD", "Spożywcze", "Kosmetyki", "Książki",
+    private final static String[] CATEGORY = {"Elektronika", "Moda", "AGD", "Spożywcze", "Kosmetyki", "Książki",
             "Sport i rekreacja", "Meble", "Gry", "Ogród"};
-
     private final static Shop SHOP = new Shop(); // Konstruktor sklepu tworzy 10 kategorii po 10 produktów
     private static ShoppingList shoppingList = new ShoppingList(); // Konstruktor listy zakupów towrzy pustą listę
-
     private static String[] products;
+    private final static int NUMBER_OF_TESTS = 5;
 
     public static void main(String[] args) {
-        initialTests(5);
+        //initialTests();
+
+        removingPositionTests();
     }
 
-    private static void initialTests(int n) {
-        for (int i = 1; i <= n; i++) {
+    private static void removingPositionTests() {
+        testTitle("REMOVING POSITION TESTS");
+
+        for (int i = 1; i <= NUMBER_OF_TESTS; i++) {
+            UTEST(i);
+
+            int countOfProductsToRemove = RAND.nextInt(1, countOfProducts);
+            System.out.println("Count of products to remove: " + countOfProductsToRemove);
+
+            products = addProductsToShoppingList();
+
+            System.out.println("Before:");
+            shoppingList.display();
+
+            int tempCount = countOfProducts;
+
+            while (countOfProductsToRemove != 0 && tempCount != 0) {
+                shoppingList.removePosition(products[RAND.nextInt(0, tempCount)]);
+                countOfProductsToRemove--;
+                tempCount--;
+            }
+
+            System.out.println("After:");
+            shoppingList.display();
+
+            shoppingList.removeAll();
+        }
+    }
+
+    private static void initialTests() {
+        testTitle("INITIAL TESTS");
+        for (int i = 1; i <= NUMBER_OF_TESTS; i++) {
             UTEST(i);
 
             products = addProductsToShoppingList();
@@ -32,7 +63,13 @@ public class UnitTests {
         String RESET = "\u001B[0m";
         String GREEN = "\u001B[32m";
 
-        System.out.println(GREEN + "####\tUTEST: " + N + "\t####" + RESET);
+        System.out.println(GREEN + "UTEST: " + N + "" + RESET);
+    }
+
+    private static void testTitle(String title) {
+        String DARK_GREEN = "\u001B[38;5;22m";
+        String RESET = "\u001B[0m";
+        System.out.println(DARK_GREEN + "####   " + title + "   ####" + RESET);
     }
 
     private static String[] addProductsToShoppingList() {

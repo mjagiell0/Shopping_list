@@ -35,6 +35,17 @@ public class ShoppingList {
         shoppingList.removeIf(position -> position.getProduct().equals(product));
     }
 
+    void removeCountOfPosition(String product, int count) {
+        ShoppingListPosition position = getPosition(product);
+
+        if(position.getCount() < count)
+            throw new IllegalArgumentException("Number of this product on list is lower than count in argument");
+        else if(position.getCount() == count)
+            removePosition(product);
+        else
+            position.setCount(position.getCount() - count);
+    }
+
     void removeAll() {
         shoppingList.clear();
     }
@@ -53,15 +64,16 @@ public class ShoppingList {
     }
 
     void checkPosition(String product) {
-        ShoppingListPosition position = getPosition(product);
+        getPosition(product).check();
+    }
 
-        position.check();
+    void uncheckPosition(String product) {
+        getPosition(product).uncheck();
     }
 
     void display() {
         String PURPLE = "\u001B[35m";
         String RESET = "\u001B[0m";
-        String DARK_BLUE = "\u001B[34m";
 
         for (int i = 0; i < shoppingList.size(); i++) {
             System.out.println(PURPLE + (i + 1) + ". position {" + RESET +
