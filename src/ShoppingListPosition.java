@@ -44,36 +44,10 @@ public class ShoppingListPosition {
         return status;
     }
 
-    String specifyCategory(String product){
+    String specifyCategory(String product, Shop shop){
         String categoryName = null;
 
-        DatabaseSpecifier dbSpecifier = new DatabaseSpecifier();
-
-        try {
-            Class.forName(dbSpecifier.getClassName());
-            Connection connection = DriverManager.getConnection(dbSpecifier.getURL(), dbSpecifier.getUsername(), dbSpecifier.getPassword());
-
-            String query = "SELECT c.CategoryName " +
-                    "FROM Categories c " +
-                    "LEFT JOIN Warehouse w ON c.CategoryID = w.CategoryID " +
-                    "LEFT JOIN Products p ON p.ProductID = w.ProductID " +
-                    "WHERE p.ProductName = ?";
-
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, product);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                categoryName = resultSet.getString("CategoryName");
-            }
-
-            resultSet.close();
-            preparedStatement.close();
-            connection.close();
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+        // TODO: Rozwinąć funkcję
 
         return categoryName;
     }

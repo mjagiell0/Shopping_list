@@ -7,15 +7,14 @@ public class ShoppingList {
         this.shoppingList = new ArrayList<>();
     }
 
-    void setPosition(String product, int count) {
+    void add(String product, int count) {
         if (product.isBlank() || count < 1)
             throw new IllegalArgumentException("Incorrect input");
 
-        for (ShoppingListPosition position : shoppingList)
-            if (position.getProduct().equals(product)) {
-                this.changeCount(product, count);
-                return;
-            }
+        if(this.has(product)){
+            this.changeCount(product, count);
+            return;
+        }
 
         ShoppingListPosition newPosition = new ShoppingListPosition(product, count);
         shoppingList.add(newPosition);
@@ -60,9 +59,24 @@ public class ShoppingList {
     }
 
     void display() {
-        System.out.println("|\t\tName\t\t|\tCategory\t|\tCount\t|\tStatus\t|");
-        System.out.println("--------------------------------------------");
+        String PURPLE = "\u001B[35m";
+        String RESET = "\u001B[0m";
+        String DARK_BLUE = "\u001B[34m";
+
+        for (int i = 0; i < shoppingList.size(); i++) {
+            System.out.println(PURPLE + (i + 1) + ". position {" + RESET +
+                    "\n- Product name: " + shoppingList.get(i).getProduct() +
+                    "\n- Category: " + shoppingList.get(i).getCategory() +
+                    "\n- Count: " + shoppingList.get(i).getCount() +
+                    "\n- Status: " + shoppingList.get(i).getStatus() + PURPLE +
+                    "\n}\n" + RESET);
+        }
+    }
+
+    boolean has(String product) {
         for (ShoppingListPosition position : shoppingList)
-            System.out.println("|\t" + position.getProduct() + "\t|\t" + position.getCategory() + "\t|\t" + position.getCount() + "\t|\t" + position.getStatus());
+            if (position.getProduct().equals(product))
+                return true;
+        return false;
     }
 }

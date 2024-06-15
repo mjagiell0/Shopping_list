@@ -1,78 +1,48 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.util.Random;
 
 public class Main {
+    private final static Random RAND = new Random();
+    private static int countOfProducts = RAND.nextInt(10);
+    final static String CATEGORY = "Elektronika";
+
+    private final static Shop SHOP = new Shop(); // Konstruktor sklepu tworzy 10 kategorii po 10 produktów
+    private static ShoppingList shoppingList = new ShoppingList(); // Konstruktor listy zakupów towrzy pustą listę
+
+    private static String[] products;
+
     public static void main(String[] args) {
 
-        String[] products = new String[100], categories = new String[10];
 
-        DatabaseSpecifier dbSpecifier = new DatabaseSpecifier();
-        try {
-            Class.forName(dbSpecifier.getClassName());
+        /* UTEST1 */
+        UTEST(1);
 
-            Connection connection = DriverManager.getConnection(dbSpecifier.getURL(), dbSpecifier.getUsername(), dbSpecifier.getPassword());
-            Statement statement = connection.createStatement();
+        products = addProductsToShoppingList();
+        shoppingList.display();
 
-            ResultSet resultSet = statement.executeQuery("SELECT CategoryName FROM Categories");
+        shoppingList.removeAll();
+        /*############################*/
+    }
 
-            for (int i = 0; resultSet.next() ; i++)
-                categories[i] = resultSet.getString(1);
+    private static void UTEST(int N) {
+        String RESET = "\u001B[0m";
+        String GREEN = "\u001B[32m";
 
-            resultSet = statement.executeQuery("SELECT ProductName FROM Products");
+        System.out.println(GREEN + "####\tUTEST: " + N + "\t####" + RESET);
+    }
 
-            for (int i = 0; resultSet.next() ; i++)
-                products[i] = resultSet.getString(1);
+    private static String[] addProductsToShoppingList() {
+        String[] products = new String[countOfProducts];
+
+        for (int i = 0; i < countOfProducts; i++) {
+            String product;
+            do {
+                product = SHOP.getProduct(CATEGORY, RAND.nextInt(10));
+            }while(shoppingList.has(product));
+
+            products[i] = product;
+            shoppingList.add(product, RAND.nextInt(10) + 1);
         }
-        catch (Exception e){
-            System.out.println(e.getMessage());
-            return;
-        }
 
-        Shop shop = new Shop();
-
-        shopInit(shop, categories, products);
-
-        ShoppingList shoppingList = new ShoppingList();
-
-        System.out.println("##### Test 1 #####");
-
-        shoppingListInit(shoppingList, products);
-        shoppingList.display();
-
-        System.out.println("##### Test 2 #####");
-
-        shoppingList.removePosition(products[0]);
-        shoppingList.display();
-
-        System.out.println("##### Test 3 #####");
-
-        shoppingList.removePosition(products[3]);
-        shoppingList.display();
-
-        System.out.println("##### Test 4 #####");
-
-        shoppingListInit(shoppingList, products);
-        shoppingList.display();
-
-        System.out.println("##### Test 5 #####");
-
-        shoppingList.checkPosition(products[2]);
-        shoppingList.display();
-
+        return products;
     }
-
-    private static void shopInit(Shop shop, String[] categoriesNames, String[] productNames) {
-        for (int i = 0; i < 10; i++)
-            for (int j = i*10; j < i*10 + 10; j++)
-                shop.addProduct(categoriesNames[i], productNames[j]);
-    }
-
-    private static void shoppingListInit(ShoppingList shoppingList, String[] names) {
-        for (int i = 0; i < 4; i++)
-            shoppingList.setPosition(names[i], (int) (Math.random() * 50));
-    }
-
-
 }
