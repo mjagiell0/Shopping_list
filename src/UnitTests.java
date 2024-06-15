@@ -34,7 +34,15 @@ public class UnitTests {
             int tempCount = countOfProducts;
 
             while (countOfProductsToRemove != 0 && tempCount != 0) {
-                shoppingList.removePosition(products[RAND.nextInt(0, tempCount)]);
+                int index;
+
+                do {
+                    index = RAND.nextInt(products.length);
+                }while (products[index] == null);
+
+                shoppingList.removePosition(products[index]);
+                products[index] = null;
+
                 countOfProductsToRemove--;
                 tempCount--;
             }
