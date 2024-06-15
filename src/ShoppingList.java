@@ -11,7 +11,7 @@ public class ShoppingList {
         if (product.isBlank() || count < 1)
             throw new IllegalArgumentException("Incorrect input");
 
-        if(this.has(product)){
+        if (this.has(product)) {
             this.changeCount(product, count);
             return;
         }

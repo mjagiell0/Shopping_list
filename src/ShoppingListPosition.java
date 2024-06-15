@@ -1,15 +1,16 @@
 import javax.xml.crypto.Data;
 import java.sql.*;
 
+
 public class ShoppingListPosition {
     private final String product;
     private final String category;
 
     private int count;
-    private boolean status = false;
+    Status status = Status.NOT_CHECKED;
 
-    ShoppingListPosition(String product, int count){
-        if(count < 1 || product.isBlank())
+    ShoppingListPosition(String product, int count) {
+        if (count < 1 || product.isBlank())
             throw new IllegalArgumentException("Incorrect input");
 
         this.product = product;
@@ -17,39 +18,40 @@ public class ShoppingListPosition {
         this.category = specifyCategory(product);
     }
 
-    void setCount(int count){
-        if(count < 1)
+    void setCount(int count) {
+        if (count < 1)
             throw new IllegalArgumentException("Count value lower then 1");
 
         this.count = count;
     }
 
-    void check(){
-        status = !status;
+    void check() {
+        status = Status.CHECKED;
     }
 
-    String getProduct(){
+    void uncheck() {
+        status = Status.NOT_CHECKED;
+    }
+
+    String getProduct() {
         return product;
     }
 
-    int getCount(){
+    int getCount() {
         return count;
     }
 
-    String getCategory(){
+    String getCategory() {
         return category;
     }
 
-    boolean getStatus(){
+    Status getStatus() {
         return status;
     }
 
-    String specifyCategory(String product, Shop shop){
-        String categoryName = null;
-
-        // TODO: Rozwinąć funkcję
-
-        return categoryName;
+    String specifyCategory(String product) {
+        Shop shop = new Shop();
+        return shop.getCategory(product);
     }
 
 }
