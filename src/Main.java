@@ -8,10 +8,11 @@ public class Main {
 
         String[] products = new String[100], categories = new String[10];
 
+        DatabaseSpecifier dbSpecifier = new DatabaseSpecifier();
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName(dbSpecifier.getClassName());
 
-            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3333/Shop", "root", "root");
+            Connection connection = DriverManager.getConnection(dbSpecifier.getURL(), dbSpecifier.getUsername(), dbSpecifier.getPassword());
             Statement statement = connection.createStatement();
 
             ResultSet resultSet = statement.executeQuery("SELECT CategoryName FROM Categories");

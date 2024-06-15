@@ -1,8 +1,10 @@
+import javax.xml.crypto.Data;
 import java.sql.*;
 
 public class ShoppingListPosition {
     private final String product;
     private final String category;
+
     private int count;
     private boolean status = false;
 
@@ -45,9 +47,11 @@ public class ShoppingListPosition {
     String specifyCategory(String product){
         String categoryName = null;
 
+        DatabaseSpecifier dbSpecifier = new DatabaseSpecifier();
+
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3333/Shop", "root", "root");
+            Class.forName(dbSpecifier.getClassName());
+            Connection connection = DriverManager.getConnection(dbSpecifier.getURL(), dbSpecifier.getUsername(), dbSpecifier.getPassword());
 
             String query = "SELECT c.CategoryName " +
                     "FROM Categories c " +
