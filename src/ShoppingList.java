@@ -68,7 +68,7 @@ public class ShoppingList {
     }
 
     void checkPosition(String product) {
-        if(getPosition(product).getStatus() == Status.CHECKED)
+        if(getPosition(product).getStatus() == PositionStatus.CHECKED)
             getPosition(product).uncheck();
         else
             getPosition(product).check();
@@ -89,6 +89,20 @@ public class ShoppingList {
                 "\n- Status: " + shoppingList.get(i).getStatus() + PURPLE +
                 "\n}\n" + RESET);
     }
+
+    void displayChecked(){
+        for (int i = 0; i < shoppingList.size(); i++)
+            if(shoppingList.get(i).isChecked())
+                displayPosition(i);
+    }
+
+    void displayUnchecked(){
+        for (int i = 0; i < shoppingList.size(); i++)
+            if(!shoppingList.get(i).isChecked())
+                displayPosition(i);
+    }
+
+
 
     boolean hasProduct(String product) {
         for (ShoppingListPosition position : shoppingList)

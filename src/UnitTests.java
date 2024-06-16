@@ -42,26 +42,34 @@ public class UnitTests {
 
         //removingCategoryTests();
 
+        positionCheckingTests();
+    }
+
+    private static void positionCheckingTests() throws SQLException {
         testTitle("CHECK POSITION TESTS");
 
-        for (int i = 0; i < NUMBER_OF_TESTS; i++) {
+        for (int i = 1; i <= NUMBER_OF_TESTS; i++) {
             UTEST(i);
 
             products = addProductsToShoppingList();
 
-            for (int j = 0; j < shoppingList.size(); j++) {
+            for (int j = 0; j < shoppingList.size() - (shoppingList.size() / 2); j++) {
                 int index;
 
                 do{
                     index = RAND.nextInt(0,shoppingList.size());
-                }while (shoppingList.getPosition(products[index]).getStatus() == Status.CHECKED);
+                }while (shoppingList.getPosition(products[index]).getStatus() == PositionStatus.CHECKED);
 
                 shoppingList.checkPosition(products[index]);
             }
 
+            System.out.println("Checked:");
+            shoppingList.displayChecked();
 
-            //TODO: stwórz display na CHECKED i UNCHECKED
+            System.out.println("Unchecked:");
+            shoppingList.displayUnchecked();
 
+            shoppingList.removeAll();
         }
     }
 

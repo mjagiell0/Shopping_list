@@ -6,7 +6,7 @@ public class ShoppingListPosition {
     private final String category;
 
     private int count;
-    Status status = Status.NOT_CHECKED;
+    PositionStatus status = PositionStatus.NOT_CHECKED;
 
     ShoppingListPosition(String product, int count) throws SQLException {
         if (count < 1 || product.isBlank())
@@ -25,11 +25,11 @@ public class ShoppingListPosition {
     }
 
     void check() {
-        status = Status.CHECKED;
+        status = PositionStatus.CHECKED;
     }
 
     void uncheck() {
-        status = Status.NOT_CHECKED;
+        status = PositionStatus.NOT_CHECKED;
     }
 
     String getProduct() {
@@ -44,13 +44,17 @@ public class ShoppingListPosition {
         return category;
     }
 
-    Status getStatus() {
+    PositionStatus getStatus() {
         return status;
     }
 
     String specifyCategory(String product) throws SQLException {
         Shop shop = new Shop();
         return shop.getCategory(product);
+    }
+
+    boolean isChecked(){
+        return status == PositionStatus.CHECKED;
     }
 
 }
