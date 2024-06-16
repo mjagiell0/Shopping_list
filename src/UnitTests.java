@@ -38,7 +38,58 @@ public class UnitTests {
 
         //removingPositionTests();
 
-        removingCountOfProductsTests();
+        //removingCountOfProductsTests();
+
+        //removingCategoryTests();
+
+        testTitle("CHECK POSITION TESTS");
+
+        for (int i = 0; i < NUMBER_OF_TESTS; i++) {
+            UTEST(i);
+
+            products = addProductsToShoppingList();
+
+            for (int j = 0; j < shoppingList.size(); j++) {
+                int index;
+
+                do{
+                    index = RAND.nextInt(0,shoppingList.size());
+                }while (shoppingList.getPosition(products[index]).getStatus() == Status.CHECKED);
+
+                shoppingList.checkPosition(products[index]);
+            }
+
+
+            //TODO: stwórz display na CHECKED i UNCHECKED
+
+        }
+    }
+
+    private static void removingCategoryTests() throws SQLException {
+        testTitle("REMOVING CATEGORY TESTS");
+
+        for (int i = 1; i <= NUMBER_OF_TESTS; i++) {
+            UTEST(i);
+
+            addProductsToShoppingList();
+
+            int index;
+            do{
+                index = RAND.nextInt(countOfCategories);
+            }while (!shoppingList.hasCategory(CATEGORY[index]));
+
+            System.out.println("Category to remove: " + CATEGORY[index]);
+
+            System.out.println("Before:");
+            shoppingList.display();
+
+            shoppingList.removeCategory(CATEGORY[index]);
+
+            System.out.println("After:");
+            shoppingList.display();
+
+            shoppingList.removeAll();
+        }
     }
 
     private static void removingCountOfProductsTests() throws SQLException {
@@ -143,7 +194,7 @@ public class UnitTests {
             String product;
             do {
                 product = SHOP.getProduct(CATEGORY[RAND.nextInt(0, countOfCategories - 1)], RAND.nextInt(10));
-            } while (shoppingList.has(product));
+            } while (shoppingList.hasProduct(product));
 
             products[i] = product;
             shoppingList.add(product, RAND.nextInt(10) + 1);

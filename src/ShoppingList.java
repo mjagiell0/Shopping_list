@@ -2,7 +2,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class ShoppingList {
-    ArrayList<ShoppingListPosition> shoppingList;
+    private ArrayList<ShoppingListPosition> shoppingList;
 
     ShoppingList() {
         this.shoppingList = new ArrayList<>();
@@ -12,7 +12,7 @@ public class ShoppingList {
         if (product.isBlank() || count < 1)
             throw new IllegalArgumentException("Incorrect input");
 
-        if (this.has(product)) {
+        if (this.hasProduct(product)) {
             this.changeCount(product, count);
             return;
         }
@@ -37,14 +37,14 @@ public class ShoppingList {
     }
 
     void removeCountOfPosition(String product, int count) {
-        if(!this.has(product))
+        if (!this.hasProduct(product))
             throw new NoSuchElementException("No such a product in list.");
 
         ShoppingListPosition position = getPosition(product);
 
-        if(position.getCount() < count)
+        if (position.getCount() < count)
             throw new IllegalArgumentException("Number of this product on list is lower than count in argument");
-        else if(position.getCount() == count)
+        else if (position.getCount() == count)
             removePosition(product);
         else
             position.setCount(position.getCount() - count);
@@ -68,11 +68,10 @@ public class ShoppingList {
     }
 
     void checkPosition(String product) {
-        getPosition(product).check();
-    }
-
-    void uncheckPosition(String product) {
-        getPosition(product).uncheck();
+        if(getPosition(product).getStatus() == Status.CHECKED)
+            getPosition(product).uncheck();
+        else
+            getPosition(product).check();
     }
 
     void display() {
@@ -91,10 +90,21 @@ public class ShoppingList {
                 "\n}\n" + RESET);
     }
 
-    boolean has(String product) {
+    boolean hasProduct(String product) {
         for (ShoppingListPosition position : shoppingList)
             if (position.getProduct().equals(product))
                 return true;
         return false;
+    }
+
+    boolean hasCategory(String category){
+        for (ShoppingListPosition position : shoppingList)
+            if(position.getCategory().equals(category))
+                return true;
+        return false;
+    }
+
+    int size(){
+        return shoppingList.size();
     }
 }
