@@ -8,16 +8,6 @@ public class UnitTests {
     private static final int countOfCategories = 10;
     private final static String[] CATEGORY = {"Elektronika", "Moda", "AGD", "Spożywcze", "Kosmetyki", "Książki",
             "Sport i rekreacja", "Meble", "Gry", "Ogród"};
-    private final static Shop SHOP;
-
-    static {
-        try {
-            SHOP = new Shop();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private static String[] products;
 
 
@@ -198,7 +188,7 @@ public class UnitTests {
         for (int i = 0; i < countOfProducts; i++) {
             String product;
             do {
-                product = SHOP.getProduct(CATEGORY[RAND.nextInt(0, countOfCategories - 1)], RAND.nextInt(10));
+                product = Server.SHOP.getProduct(CATEGORY[RAND.nextInt(0, countOfCategories - 1)], RAND.nextInt(10));
             } while (shoppingList.hasProduct(product));
 
             products[i] = product;

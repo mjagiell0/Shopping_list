@@ -11,11 +11,11 @@ public class Shop {
         String[] categories = new String[10];
         ArrayList<String> products = new ArrayList<>();
 
-        ResultSet resultSet = Main.dbHandler.getData("SELECT CategoryName FROM Categories");
+        ResultSet resultSet = Server.dbHandler.getData("SELECT CategoryName FROM Categories");
         for (int i = 0; resultSet.next(); i++)
             categories[i] = resultSet.getString(1);
 
-        resultSet = Main.dbHandler.getData("SELECT ProductName FROM Products");
+        resultSet = Server.dbHandler.getData("SELECT ProductName FROM Products");
         while(resultSet.next())
             products.add(resultSet.getString(1));
 
