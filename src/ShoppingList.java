@@ -1,3 +1,4 @@
+import java.sql.SQLException;
 import java.util.*;
 
 public class ShoppingList {
@@ -7,7 +8,7 @@ public class ShoppingList {
         this.shoppingList = new ArrayList<>();
     }
 
-    void add(String product, int count) {
+    void add(String product, int count) throws SQLException {
         if (product.isBlank() || count < 1)
             throw new IllegalArgumentException("Incorrect input");
 
@@ -36,6 +37,9 @@ public class ShoppingList {
     }
 
     void removeCountOfPosition(String product, int count) {
+        if(!this.has(product))
+            throw new NoSuchElementException("No such a product in list.");
+
         ShoppingListPosition position = getPosition(product);
 
         if(position.getCount() < count)
@@ -72,17 +76,19 @@ public class ShoppingList {
     }
 
     void display() {
+        for (int i = 0; i < shoppingList.size(); i++)
+            displayPosition(i);
+    }
+
+    void displayPosition(int i) {
         String PURPLE = "\u001B[35m";
         String RESET = "\u001B[0m";
-
-        for (int i = 0; i < shoppingList.size(); i++) {
-            System.out.println(PURPLE + (i + 1) + ". position {" + RESET +
-                    "\n- Product name: " + shoppingList.get(i).getProduct() +
-                    "\n- Category: " + shoppingList.get(i).getCategory() +
-                    "\n- Count: " + shoppingList.get(i).getCount() +
-                    "\n- Status: " + shoppingList.get(i).getStatus() + PURPLE +
-                    "\n}\n" + RESET);
-        }
+        System.out.println(PURPLE + (i + 1) + ". position {" + RESET +
+                "\n- Product name: " + shoppingList.get(i).getProduct() +
+                "\n- Category: " + shoppingList.get(i).getCategory() +
+                "\n- Count: " + shoppingList.get(i).getCount() +
+                "\n- Status: " + shoppingList.get(i).getStatus() + PURPLE +
+                "\n}\n" + RESET);
     }
 
     boolean has(String product) {

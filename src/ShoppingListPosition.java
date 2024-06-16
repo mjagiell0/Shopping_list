@@ -1,4 +1,3 @@
-import javax.xml.crypto.Data;
 import java.sql.*;
 
 
@@ -9,7 +8,7 @@ public class ShoppingListPosition {
     private int count;
     Status status = Status.NOT_CHECKED;
 
-    ShoppingListPosition(String product, int count) {
+    ShoppingListPosition(String product, int count) throws SQLException {
         if (count < 1 || product.isBlank())
             throw new IllegalArgumentException("Incorrect input");
 
@@ -49,7 +48,7 @@ public class ShoppingListPosition {
         return status;
     }
 
-    String specifyCategory(String product) {
+    String specifyCategory(String product) throws SQLException {
         Shop shop = new Shop();
         return shop.getCategory(product);
     }

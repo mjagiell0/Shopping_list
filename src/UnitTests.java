@@ -1,23 +1,79 @@
+import java.sql.SQLException;
 import java.util.Random;
 
 public class UnitTests {
+    private static ShoppingList shoppingList = new ShoppingList();
     private final static Random RAND = new Random();
     private static final int countOfProducts = RAND.nextInt(1,10);
     private static final int countOfCategories = 10;
     private final static String[] CATEGORY = {"Elektronika", "Moda", "AGD", "Spożywcze", "Kosmetyki", "Książki",
             "Sport i rekreacja", "Meble", "Gry", "Ogród"};
-    private final static Shop SHOP = new Shop(); // Konstruktor sklepu tworzy 10 kategorii po 10 produktów
-    private static ShoppingList shoppingList = new ShoppingList(); // Konstruktor listy zakupów towrzy pustą listę
-    private static String[] products;
-    private final static int NUMBER_OF_TESTS = 5;
+    public static DatabaseHandler dbHandler;
 
-    public static void main(String[] args) {
+    static {
+        try {
+            dbHandler = new DatabaseHandler();
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private final static Shop SHOP;
+
+    static {
+        try {
+            SHOP = new Shop();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static String[] products;
+    private final static int NUMBER_OF_TESTS = 50;
+
+
+
+    public static void main(String[] args) throws SQLException {
         //initialTests();
 
         //removingPositionTests();
+
+        removingCountOfProductsTests();
     }
 
-    private static void removingPositionTests() {
+    private static void removingCountOfProductsTests() throws SQLException {
+        testTitle("REMOVING COUNT OF POSITION TESTS");
+
+        for (int i = 1; i <= NUMBER_OF_TESTS; i++) {
+            UTEST(i);
+
+            products = addProductsToShoppingList();
+            int index = RAND.nextInt(0, countOfProducts);
+
+            ShoppingListPosition position = shoppingList.getPosition(products[index]);
+
+            int countOfProductToRemove = RAND.nextInt(1,position.getCount() + 1);
+
+            System.out.println("Count of product to remove: " + countOfProductToRemove);
+
+            System.out.println("Before:");
+            shoppingList.displayPosition(index);
+
+            int tempCount = shoppingList.getPosition(products[index]).getCount();
+
+            shoppingList.removeCountOfPosition(products[index], countOfProductToRemove);
+
+            System.out.println("After:");
+            if(tempCount == countOfProductToRemove)
+                System.out.println("Product has been removed");
+            else
+                shoppingList.displayPosition(index);
+
+            shoppingList.removeAll();
+        }
+    }
+
+    private static void removingPositionTests() throws SQLException {
         testTitle("REMOVING POSITION TESTS");
 
         for (int i = 1; i <= NUMBER_OF_TESTS; i++) {
@@ -54,7 +110,7 @@ public class UnitTests {
         }
     }
 
-    private static void initialTests() {
+    private static void initialTests() throws SQLException {
         testTitle("INITIAL TESTS");
         for (int i = 1; i <= NUMBER_OF_TESTS; i++) {
             UTEST(i);
@@ -71,7 +127,7 @@ public class UnitTests {
         String RESET = "\u001B[0m";
         String GREEN = "\u001B[32m";
 
-        System.out.println(GREEN + "UTEST: " + N + "" + RESET);
+        System.out.println(GREEN + "UTEST: " + N + RESET);
     }
 
     private static void testTitle(String title) {
@@ -80,7 +136,7 @@ public class UnitTests {
         System.out.println(DARK_GREEN + "####   " + title + "   ####" + RESET);
     }
 
-    private static String[] addProductsToShoppingList() {
+    private static String[] addProductsToShoppingList() throws SQLException {
         String[] products = new String[countOfProducts];
 
         for (int i = 0; i < countOfProducts; i++) {
