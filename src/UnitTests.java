@@ -8,16 +8,6 @@ public class UnitTests {
     private static final int countOfCategories = 10;
     private final static String[] CATEGORY = {"Elektronika", "Moda", "AGD", "Spożywcze", "Kosmetyki", "Książki",
             "Sport i rekreacja", "Meble", "Gry", "Ogród"};
-    public static DatabaseHandler dbHandler;
-
-    static {
-        try {
-            dbHandler = new DatabaseHandler();
-        } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private final static Shop SHOP;
 
     static {
@@ -29,23 +19,30 @@ public class UnitTests {
     }
 
     private static String[] products;
+
+
+    /*
+    * Variable to set if user wants to
+    * analyze condition of programs work
+    * */
+
     private final static int NUMBER_OF_TESTS = 50;
 
 
 
-    public static void main(String[] args) throws SQLException {
-        //initialTests();
+    public void executeTests() throws SQLException {
+        initialTests();
 
-        //removingPositionTests();
+        removingPositionTests();
 
-        //removingCountOfProductsTests();
+        removingCountOfProductsTests();
 
-        //removingCategoryTests();
+        removingCategoryTests();
 
         positionCheckingTests();
     }
 
-    private static void positionCheckingTests() throws SQLException {
+    private void positionCheckingTests() throws SQLException {
         testTitle("CHECK POSITION TESTS");
 
         for (int i = 1; i <= NUMBER_OF_TESTS; i++) {
@@ -73,7 +70,7 @@ public class UnitTests {
         }
     }
 
-    private static void removingCategoryTests() throws SQLException {
+    private void removingCategoryTests() throws SQLException {
         testTitle("REMOVING CATEGORY TESTS");
 
         for (int i = 1; i <= NUMBER_OF_TESTS; i++) {
@@ -100,7 +97,7 @@ public class UnitTests {
         }
     }
 
-    private static void removingCountOfProductsTests() throws SQLException {
+    private void removingCountOfProductsTests() throws SQLException {
         testTitle("REMOVING COUNT OF POSITION TESTS");
 
         for (int i = 1; i <= NUMBER_OF_TESTS; i++) {
@@ -132,7 +129,7 @@ public class UnitTests {
         }
     }
 
-    private static void removingPositionTests() throws SQLException {
+    private void removingPositionTests() throws SQLException {
         testTitle("REMOVING POSITION TESTS");
 
         for (int i = 1; i <= NUMBER_OF_TESTS; i++) {
@@ -169,7 +166,7 @@ public class UnitTests {
         }
     }
 
-    private static void initialTests() throws SQLException {
+    private void initialTests() throws SQLException {
         testTitle("INITIAL TESTS");
         for (int i = 1; i <= NUMBER_OF_TESTS; i++) {
             UTEST(i);
@@ -182,20 +179,20 @@ public class UnitTests {
 
     }
 
-    private static void UTEST(int N) {
+    private void UTEST(int N) {
         String RESET = "\u001B[0m";
         String GREEN = "\u001B[32m";
 
         System.out.println(GREEN + "UTEST: " + N + RESET);
     }
 
-    private static void testTitle(String title) {
+    private void testTitle(String title) {
         String DARK_GREEN = "\u001B[38;5;22m";
         String RESET = "\u001B[0m";
         System.out.println(DARK_GREEN + "####   " + title + "   ####" + RESET);
     }
 
-    private static String[] addProductsToShoppingList() throws SQLException {
+    private String[] addProductsToShoppingList() throws SQLException {
         String[] products = new String[countOfProducts];
 
         for (int i = 0; i < countOfProducts; i++) {

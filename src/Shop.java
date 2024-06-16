@@ -11,11 +11,11 @@ public class Shop {
         String[] categories = new String[10];
         ArrayList<String> products = new ArrayList<>();
 
-        ResultSet resultSet = UnitTests.dbHandler.getData("SELECT CategoryName FROM Categories");
+        ResultSet resultSet = Main.dbHandler.getData("SELECT CategoryName FROM Categories");
         for (int i = 0; resultSet.next(); i++)
             categories[i] = resultSet.getString(1);
 
-        resultSet = UnitTests.dbHandler.getData("SELECT ProductName FROM Products");
+        resultSet = Main.dbHandler.getData("SELECT ProductName FROM Products");
         while(resultSet.next())
             products.add(resultSet.getString(1));
 
@@ -38,6 +38,27 @@ public class Shop {
             System.out.println(category + ":");
             for (String product : shop.get(category))
                 System.out.println("- " + product);
+        }
+    }
+
+    void displayCategories(){
+        int i = 1;
+
+        System.out.println("Categories:");
+        for(String category : shop.keySet()) {
+            System.out.println(i + ". " + category);
+            i++;
+        }
+    }
+
+    void displayProducts(String category){
+        ArrayList<String> products = shop.get(category);
+        int i = 1;
+
+        System.out.println("Products from category " + category);
+        for (String product : products){
+            System.out.println(i + ". " + product);
+            i++;
         }
     }
 

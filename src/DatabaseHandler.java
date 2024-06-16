@@ -24,21 +24,4 @@ public class DatabaseHandler {
 
         return resultSet;
     }
-
-    String getURL() {
-        return URL;
-    }
-
-    String getUsername() {
-        return USER;
-    }
-
-    String getPassword() {
-        return PASSWORD;
-    }
-
-    String getClassName() {
-        return className;
-    }
-
 }
